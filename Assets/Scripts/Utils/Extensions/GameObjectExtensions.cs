@@ -37,7 +37,6 @@ public static class GameObjectExtensions
         }
         return result;
 #else
-        Log.Error("FindComponents<T>() availible only in editor mode!");
         return new List<T>();
 #endif
     }

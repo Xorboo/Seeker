@@ -6,17 +6,22 @@ using System.Collections.Generic;
 public class PlayerMoveController : NetworkBehaviour
 {
     [SerializeField]
-    float Speed = 30;
+    VRCamera VrCamera;
+    [SerializeField]
+    CharacterController CC;
+    [SerializeField]
+    float Speed = 3f;
 
     [SerializeField]
-    Transform LookTransform = null;
+    GameObject SnowballPrefab;
     [SerializeField]
-    Rigidbody Rigidbody = null;
+    float SnowballSpeed = 5f;
+    [SerializeField]
+    float SnowballLifetime = 5f;
 
-    public enum PlayerCommand
-    {
-        Vertical, Horizontal, Fire, Reload
-    }
+    [SyncVar]
+    public Vector3 CameraEuler;
+
 
     [ClientCallback]
     void Update()
@@ -24,44 +29,48 @@ public class PlayerMoveController : NetworkBehaviour
         if (!isLocalPlayer)
             return;
 
-        float horizontal = Input.GetAxis("Horizontal");
-        if (horizontal != 0)
-        {
-            CmdInput(PlayerCommand.Horizontal, horizontal);
-        }
+        // Updatiing our look direction to the server
+        CmdUpdateCameraAngle(VrCamera.vrCameraHeading.rotation.eulerAngles);
+
+        // Moving
+        Vector3 move = 
+            Vector3.forward * FibrumInput.GetJoystickAxis(FibrumInput.Axis.Vertical1) + 
+            Vector3.right * FibrumInput.GetJoystickAxis(FibrumInput.Axis.Horizontal1);
+        CmdMovePLayer(VrCamera.vrCameraHeading.TransformDirection(move));
 
 
-        float vertical = Input.GetAxis("Vertical");
-        if (vertical != 0)
+        // Shooting
+        if (FibrumInput.GetJoystickButtonDown(FibrumInput.Button.A))
         {
-            CmdInput(PlayerCommand.Vertical, vertical);
+            Vector3 bulletDir =
+               VrCamera.vrCameraHeading.position +
+               VrCamera.vrCameraHeading.TransformDirection(Vector3.forward * 0.5f - Vector3.up * 0.5f);
+            Vector3 bulletRotation = VrCamera.vrCameraHeading.transform.rotation.eulerAngles;
+            CmdSpawnBullet(bulletDir, bulletRotation);
         }
 
-        float fire = Input.GetAxis("Fire1");
-        if (fire != 0)
-        {
-            CmdInput(PlayerCommand.Fire, fire);
-        }
+        
+        // Todo reloading - if we are looking down at ferst (later - raycasting to the snow)
     }
 
     [Command]
-    public void CmdInput(PlayerCommand cmd, float value)
+    public void CmdMovePLayer(Vector3 move)
     {
-        switch(cmd)
-        {
-            case PlayerCommand.Fire:
-                //Debug.Log("Fire! " + value);
-                break;
+        CC.SimpleMove(Speed * move);
+    }
 
-            case PlayerCommand.Horizontal:
-                //Debug.Log("hor " + value);
-                Rigidbody.AddForce(new Vector3(Speed * value, 0, 0));
-                break;
+    [Command]
+    public void CmdSpawnBullet(Vector3 direction, Vector3 rotation)
+    {
+        GameObject snowball = Instantiate(SnowballPrefab, direction, Quaternion.Euler(rotation)) as GameObject;
+        snowball.GetComponent<Rigidbody>().AddRelativeForce(Vector3.forward * SnowballSpeed, ForceMode.Impulse);
+        Destroy(snowball, SnowballLifetime);
+        NetworkServer.Spawn(snowball);
+    }
 
-            case PlayerCommand.Vertical:
-                //Debug.Log("ver " + value);
-                Rigidbody.AddForce(new Vector3(0, 0, Speed * value));
-                break;
-        }
+    [Command(channel = 1)]
+    public void CmdUpdateCameraAngle(Vector3 euler)
+    {
+        CameraEuler = euler;
     }
 }
