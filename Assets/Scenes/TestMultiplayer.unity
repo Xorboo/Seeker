@@ -39498,6 +39498,8 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 1328993117}
+  - 114: {fileID: 1328993119}
+  - 114: {fileID: 1328993118}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -39520,6 +39522,42 @@ Transform:
   - {fileID: 364233737}
   m_Father: {fileID: 0}
   m_RootOrder: 1
+--- !u!114 &1328993118
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1328993116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f8ee0a4b347bb74299b02efcece4f3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HitS: {fileID: 8300000, guid: 32b2742de2913094e82dd38c896c2176, type: 3}
+  YellowHitS: {fileID: 8300000, guid: 75d470feabda80f41bf2ede770e5fbf6, type: 3}
+  CollectS: {fileID: 8300000, guid: 7f0ed8e42ceaf0942a653151641023cf, type: 3}
+  ThrowS: {fileID: 8300000, guid: 7402067bcafaed24bb4e2a8ec2fb45de, type: 3}
+  BG: {fileID: 8300000, guid: 6a5ba1e70089f914c9aeebecfd4ab106, type: 3}
+--- !u!114 &1328993119
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1328993116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5d9ffecb145c3c448a38c1ab64ce8f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _SoundVolume: 1
+  DefaultSoundVolume: 1
+  UnmutedSoundVolume: 1
+  _MusicVolume: 1
+  DefaultMusicVolume: 1
+  UnmutedMusicVolume: 1
+  InitialCapacity: 10
+  MaxCapacity: 15
+  ClearAllAudioClipsOnLevelLoad: 1
 --- !u!1 &1329434410
 GameObject:
   m_ObjectHideFlags: 0

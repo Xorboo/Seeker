@@ -99,14 +99,32 @@ public class PlayerMoveController : NetworkBehaviour
         PlayerNumber = PlayerNumberBase++;
         name = "Player #" + PlayerNumber;
     }
+
+    float PrevHealth = 100f;
+    bool PrevPoison = false;
+
     [ClientCallback]
     void Update()
     {
         if (!isLocalPlayer)
             return;
 
-        // Checking if we are posioned
+        // Sounds
+        bool posionPlayed = false;
 
+        if (IsPoisoned && !PrevPoison)
+        {
+            SoundManager.Instance.Poison();
+            posionPlayed = true;
+        }
+        PrevPoison = IsPoisoned;
+
+        if (PrevHealth > Health && !posionPlayed)
+            SoundManager.Instance.Hit();
+        PrevHealth = Health;
+
+
+        // Checking if we are posioned
         foreach (var twirl in PosionTwirl)
             twirl.angle = IsPoisoned ? TwirlIntensity : 0;
 
@@ -195,6 +213,7 @@ public class PlayerMoveController : NetworkBehaviour
             CmdSpawnBullet(bulletDir, bulletRotation, forcemining, Snowballs[0], PlayerNumber);
             Snowballs.RemoveAt(0);
             isForcemining = false;
+            SoundManager.Instance.Throw();
 
             StartCoroutine(Rest());
         }
@@ -206,7 +225,10 @@ public class PlayerMoveController : NetworkBehaviour
         IsTakingAmmo = true;
         yield return new WaitForSeconds(AmmoTakeTime);
         if (Snowballs.Count < MaxAmmo)
+        {
             Snowballs.Add(type);
+            SoundManager.Instance.Collect();
+        }
         IsTakingAmmo = false;
     }
 
