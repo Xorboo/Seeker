@@ -19,10 +19,13 @@ public class Snowball : NetworkBehaviour
 
     [SyncVar]
     public SnowType Type;
+    [SyncVar]
+    public string ShooterName;
 
-    public void SetSnow(SnowType type)
+    public void SetSnow(SnowType type, string shooterName)
     {
         Type = type;
+        ShooterName = shooterName;
     }
 
     void Start()

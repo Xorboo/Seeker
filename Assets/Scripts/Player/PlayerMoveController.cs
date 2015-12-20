@@ -5,6 +5,8 @@ using System.Collections.Generic;
 
 public class PlayerMoveController : NetworkBehaviour
 {
+    static int PlayerNumber = 0;
+
     [SerializeField]
     public VRCamera VrCamera;
     [SerializeField]
@@ -47,6 +49,7 @@ public class PlayerMoveController : NetworkBehaviour
     [SerializeField]
     float RestTime = 0.5f;
 
+    public Vector3 LastHitPosition;
 
     void Reset()
     {
@@ -68,6 +71,11 @@ public class PlayerMoveController : NetworkBehaviour
         }
     }
 
+    [ServerCallback]
+    void Awake()
+    {
+        name = "Player #" + PlayerNumber++;
+    }
     [ClientCallback]
     void Update()
     {
@@ -108,10 +116,13 @@ public class PlayerMoveController : NetworkBehaviour
             {
                 StopWatchingDrift();
             }
+
+            LastHitPosition = hit.point;
         }
         else
         {
             StopWatchingDrift();
+            LastHitPosition = new Vector3(0, -1000, 0);
         }
 
 
@@ -153,7 +164,7 @@ public class PlayerMoveController : NetworkBehaviour
                VrCamera.vrCameraHeading.position +
                VrCamera.vrCameraHeading.TransformDirection(Vector3.forward * 1.2f);
             Vector3 bulletRotation = VrCamera.vrCameraHeading.rotation.eulerAngles + new Vector3(-45, 0, 0);
-            CmdSpawnBullet(bulletDir, bulletRotation, forcemining, Snowballs[0]);
+            CmdSpawnBullet(bulletDir, bulletRotation, forcemining, Snowballs[0], name);
             Snowballs.RemoveAt(0);
             isForcemining = false;
 
@@ -190,13 +201,13 @@ public class PlayerMoveController : NetworkBehaviour
     }
 
     [Command]
-    public void CmdSpawnBullet(Vector3 direction, Vector3 rotation, float force, Snowball.SnowType type)
+    public void CmdSpawnBullet(Vector3 direction, Vector3 rotation, float force, Snowball.SnowType type, string shooterName)
     {
         //int type = lstAmmo[0];
         //lstAmmo.Remove(lstAmmo[0]);
         GameObject snowball = Instantiate(SnowballPrefab, direction, Quaternion.Euler(rotation)) as GameObject;
         snowball.GetComponent<Rigidbody>().AddRelativeForce(Vector3.forward * force, ForceMode.Impulse);
-        snowball.GetComponent<Snowball>().SetSnow(type);
+        snowball.GetComponent<Snowball>().SetSnow(type, shooterName);
         Destroy(snowball, SnowballLifetime);
         NetworkServer.Spawn(snowball);
 
@@ -220,11 +231,17 @@ public class PlayerMoveController : NetworkBehaviour
         {
             var snowball = col.gameObject.GetComponent<Snowball>();
 
+            if (snowball.ShooterName == name)
+            {
+                Log.Warning("Hit self");
+                return;
+            }
+
             DoDamage(15);
             if (snowball.Type == Snowball.SnowType.Yellow)
                 Poison();
 
-            Log.Write("Hit! Hp: " + Health);
+            Log.Write("Hit " + name + ", Hp: " + Health);
             Destroy(col.gameObject);
         }
     }

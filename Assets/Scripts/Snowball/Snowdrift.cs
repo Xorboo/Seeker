@@ -43,6 +43,10 @@ public class Snowdrift : NetworkBehaviour
         }
 
         GetComponent<Renderer>().material.SetColor("_Color", snowColor);
+
+
+        if (isServer)
+            NetworkServer.Spawn(gameObject);
     }
 
 
