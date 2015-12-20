@@ -27,6 +27,7 @@ GameObject:
   - 20: {fileID: 2054160}
   - 114: {fileID: 11452932}
   - 114: {fileID: 11469388}
+  - 114: {fileID: 11419244}
   - 114: {fileID: 11487272}
   m_Layer: 0
   m_Name: RCamera
@@ -202,6 +203,7 @@ GameObject:
   - 20: {fileID: 2065510}
   - 114: {fileID: 11424010}
   - 114: {fileID: 11493960}
+  - 114: {fileID: 11433078}
   - 114: {fileID: 11456072}
   m_Layer: 0
   m_Name: LCamera
@@ -741,6 +743,47 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Controller: {fileID: 11486836}
+--- !u!114 &11419244
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 132270}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02536f33053638549ab5c50ff3ecc0de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tweakMode: 0
+  screenBlendMode: 1
+  hdr: 0
+  sepBlurSpread: 4.2
+  useSrcAlphaAsMask: 0
+  bloomIntensity: -2
+  bloomThreshold: 0.5
+  bloomBlurIterations: 2
+  lensflares: 0
+  hollywoodFlareBlurIterations: 2
+  lensflareMode: 1
+  hollyStretchWidth: 3.5
+  lensflareIntensity: 2.69
+  lensflareThreshold: 0.27
+  flareColorA: {r: 0.24264705, g: 0.24264705, b: 1, a: 0.75}
+  flareColorB: {r: 0.16911763, g: 1, b: 1, a: 0.75}
+  flareColorC: {r: 0.77931046, g: 1, b: 0, a: 0.75}
+  flareColorD: {r: 0.8, g: 0.4, b: 0, a: 0.75}
+  lensFlareVignetteMask: {fileID: 2800000, guid: 95ef4804fe0be4c999ddaa383536cde8,
+    type: 3}
+  lensFlareShader: {fileID: 4800000, guid: 459fe69d2f6d74ddb92f04dbf45a866b, type: 3}
+  vignetteShader: {fileID: 4800000, guid: 627943dc7a9a74286b70a4f694a0acd5, type: 3}
+  separableBlurShader: {fileID: 4800000, guid: a9df009a214e24a5ebbf271595f8d5b6, type: 3}
+  addBrightStuffOneOneShader: {fileID: 4800000, guid: f7898d203e9b94c0dbe2bf9dd5cb32c0,
+    type: 3}
+  screenBlendShader: {fileID: 4800000, guid: 53b3960ee3d3d4a5caa8d5473d120187, type: 3}
+  hollywoodFlaresShader: {fileID: 4800000, guid: e2baf3cae8edc4daf94c9adc2154be00,
+    type: 3}
+  brightPassFilterShader: {fileID: 4800000, guid: 186c4c0d31e314f049595dcbaf4ca129,
+    type: 3}
 --- !u!114 &11423826
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -802,6 +845,47 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
+--- !u!114 &11433078
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 192052}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02536f33053638549ab5c50ff3ecc0de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tweakMode: 0
+  screenBlendMode: 1
+  hdr: 0
+  sepBlurSpread: 4.2
+  useSrcAlphaAsMask: 0
+  bloomIntensity: -2
+  bloomThreshold: 0.5
+  bloomBlurIterations: 2
+  lensflares: 0
+  hollywoodFlareBlurIterations: 2
+  lensflareMode: 1
+  hollyStretchWidth: 3.5
+  lensflareIntensity: 2.69
+  lensflareThreshold: 0.27
+  flareColorA: {r: 0.24264705, g: 0.24264705, b: 1, a: 0.75}
+  flareColorB: {r: 0.16911763, g: 1, b: 1, a: 0.75}
+  flareColorC: {r: 0.77931046, g: 1, b: 0, a: 0.75}
+  flareColorD: {r: 0.8, g: 0.4, b: 0, a: 0.75}
+  lensFlareVignetteMask: {fileID: 2800000, guid: 95ef4804fe0be4c999ddaa383536cde8,
+    type: 3}
+  lensFlareShader: {fileID: 4800000, guid: 459fe69d2f6d74ddb92f04dbf45a866b, type: 3}
+  vignetteShader: {fileID: 4800000, guid: 627943dc7a9a74286b70a4f694a0acd5, type: 3}
+  separableBlurShader: {fileID: 4800000, guid: a9df009a214e24a5ebbf271595f8d5b6, type: 3}
+  addBrightStuffOneOneShader: {fileID: 4800000, guid: f7898d203e9b94c0dbe2bf9dd5cb32c0,
+    type: 3}
+  screenBlendShader: {fileID: 4800000, guid: 53b3960ee3d3d4a5caa8d5473d120187, type: 3}
+  hollywoodFlaresShader: {fileID: 4800000, guid: e2baf3cae8edc4daf94c9adc2154be00,
+    type: 3}
+  brightPassFilterShader: {fileID: 4800000, guid: 186c4c0d31e314f049595dcbaf4ca129,
+    type: 3}
 --- !u!114 &11436850
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -894,7 +978,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shader: {fileID: 4800000, guid: 641b781cad112c75d0008dfa8d76c639, type: 3}
   radius: {x: 0.5, y: 0.5}
-  angle: 0
+  angle: 65
   center: {x: 0.5, y: 0.5}
 --- !u!114 &11457864
 MonoBehaviour:
@@ -1043,7 +1127,10 @@ MonoBehaviour:
   PosionTwirl:
   - {fileID: 11487272}
   - {fileID: 11456072}
-  TwirlIntensity: 30
+  Bloom:
+  - {fileID: 11419244}
+  - {fileID: 11433078}
+  TwirlIntensity: 55
   VrCamera: {fileID: 11457864}
   CC: {fileID: 14378094}
   Speed: 8
@@ -1055,7 +1142,7 @@ MonoBehaviour:
   d_forcemine: 2.5
   CameraEuler: {x: 0, y: 0, z: 0}
   Health: 100
-  PosionTime: 5
+  PosionTime: 20
   AmmoTakeTime: 1.25
   RestTime: 0.5
   LastHitPosition: {x: 0, y: 0, z: 0}
@@ -1072,7 +1159,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shader: {fileID: 4800000, guid: 641b781cad112c75d0008dfa8d76c639, type: 3}
   radius: {x: 0.5, y: 0.5}
-  angle: 0
+  angle: 64
   center: {x: 0.5, y: 0.5}
 --- !u!114 &11493960
 MonoBehaviour:
@@ -1194,7 +1281,7 @@ RectTransform:
   m_RootOrder: 1
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 26, y: 5}
+  m_AnchoredPosition: {x: 26, y: 40.5}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &22424594
@@ -1248,7 +1335,7 @@ RectTransform:
   m_RootOrder: 2
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 85, y: -7}
+  m_AnchoredPosition: {x: 85, y: 28.5}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &100100000

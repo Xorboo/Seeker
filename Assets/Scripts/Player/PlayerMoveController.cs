@@ -16,6 +16,9 @@ public class PlayerMoveController : NetworkBehaviour
     [SerializeField]
     UnityStandardAssets.ImageEffects.Twirl[] PosionTwirl;
     [SerializeField]
+    UnityStandardAssets.ImageEffects.BloomAndFlares[] Bloom;
+
+    [SerializeField]
     float TwirlIntensity = 30f;
 
 
@@ -127,6 +130,8 @@ public class PlayerMoveController : NetworkBehaviour
         // Checking if we are posioned
         foreach (var twirl in PosionTwirl)
             twirl.angle = IsPoisoned ? TwirlIntensity : 0;
+        foreach (var bloom in Bloom)
+            bloom.enabled = IsPoisoned;
 
         SnowballsText.text = Snowballs.Count + "/" + MaxAmmo;
         HealthText.text = Health.ToString();
