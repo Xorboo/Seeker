@@ -8,7 +8,7 @@ public class SpawnManager : Singleton<SpawnManager>
     [SerializeField]
     int TestPoints = 3;
     [SerializeField]
-    NetworkStartPosition NetworkPosition;
+    public NetworkStartPosition NetworkPosition;
 
     List<Vector3> SpawnPoints = new List<Vector3>();
     int LastIndex = -1;

@@ -4,12 +4,12 @@ using System.Collections;
 public class CopyCameraRotation : MonoBehaviour
 {
     [SerializeField]
-    PlayerMoveController Controller;
+    PlayerMoveController Controller = null;
 
-    void Update()
+    void LateUpdate()
     {
         // Just y axis are important
-        //transform.rotation = Quaternion.Euler(Controller.CameraEuler);
-        transform.rotation = Quaternion.Euler(new Vector3(0, Controller.CameraEuler.y, 0));
+        Vector3 rotation = Controller.isLocalPlayer ? Controller.GetCameraRotation() : Controller.CameraEuler;
+        transform.rotation = Quaternion.Euler(new Vector3(0, rotation.y, 0));
     }
 }
