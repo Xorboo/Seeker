@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Networking;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,6 +7,17 @@ using System.Collections.Generic;
 public class PlayerMoveController : NetworkBehaviour
 {
     static int PlayerNumberBase = 0;
+
+    [SerializeField]
+    Text SnowballsText = null;
+    [SerializeField]
+    Text HealthText = null;
+
+    [SerializeField]
+    UnityStandardAssets.ImageEffects.Twirl[] PosionTwirl;
+    [SerializeField]
+    float TwirlIntensity = 30f;
+
 
     [SerializeField]
     public VRCamera VrCamera;
@@ -23,7 +35,8 @@ public class PlayerMoveController : NetworkBehaviour
     [SerializeField]
     float MaxPickupDistance = 2f;
     [SerializeField]
-    float forcemining = 2f;
+    float InitialForce = 2f;
+    float forcemining;
     [SerializeField]
     float max_forcemine = 5f;
     [SerializeField]
@@ -34,6 +47,11 @@ public class PlayerMoveController : NetworkBehaviour
 
     [SyncVar]
     public float Health = 100;
+
+    [SerializeField]
+    float PosionTime = 5f;
+    [SyncVar]
+    bool IsPoisoned = false;
 
     [SyncVar]
     int PlayerNumber = 0;
@@ -63,6 +81,7 @@ public class PlayerMoveController : NetworkBehaviour
         isForcemining = false;
         Health = 100f;
         StopWatchingDrift();
+        IsPoisoned = false;
     }
 
     void StopWatchingDrift()
@@ -85,6 +104,14 @@ public class PlayerMoveController : NetworkBehaviour
     {
         if (!isLocalPlayer)
             return;
+
+        // Checking if we are posioned
+
+        foreach (var twirl in PosionTwirl)
+            twirl.angle = IsPoisoned ? TwirlIntensity : 0;
+
+        SnowballsText.text = Snowballs.Count + "/" + MaxAmmo;
+        HealthText.text = Health.ToString();
 
         // Updatiing our look direction to the server
         CmdUpdateCameraAngle(GetCameraRotation());
@@ -133,9 +160,6 @@ public class PlayerMoveController : NetworkBehaviour
         // Taking Ammo
         if (FibrumInput.GetJoystickButtonDown(FibrumInput.Button.B) || Input.GetMouseButtonDown(1))
         {
-            Log.Write("Taking ammo: pressed");
-
-
             if (Snowballs.Count < MaxAmmo && !isForcemining && !IsTakingAmmo) // Looking at snow
             {
                 Ray checkRay = new Ray(VrCamera.vrCameraHeading.position, VrCamera.vrCameraHeading.forward);
@@ -158,7 +182,7 @@ public class PlayerMoveController : NetworkBehaviour
         if (FibrumInput.GetJoystickButtonDown(FibrumInput.Button.A) && !IsTakingAmmo && Snowballs.Count > 0 && !IsResting)
         {
             isForcemining = true;
-            forcemining = 0;
+            forcemining = InitialForce;
         }
         if (isForcemining)
             forcemining = Mathf.Min(max_forcemine, forcemining + d_forcemine * Time.deltaTime);
@@ -167,7 +191,7 @@ public class PlayerMoveController : NetworkBehaviour
             Vector3 bulletDir =
                VrCamera.vrCameraHeading.position +
                VrCamera.vrCameraHeading.TransformDirection(Vector3.forward * 1.2f);
-            Vector3 bulletRotation = VrCamera.vrCameraHeading.rotation.eulerAngles + new Vector3(-45, 0, 0);
+            Vector3 bulletRotation = VrCamera.vrCameraHeading.rotation.eulerAngles + new Vector3(-25, 0, 0);
             CmdSpawnBullet(bulletDir, bulletRotation, forcemining, Snowballs[0], PlayerNumber);
             Snowballs.RemoveAt(0);
             isForcemining = false;
@@ -243,7 +267,7 @@ public class PlayerMoveController : NetworkBehaviour
 
             DoDamage(15);
             if (snowball.Type == Snowball.SnowType.Yellow)
-                Poison();
+                StartCoroutine(Poison());
 
             Log.Write("Hit " + name + ", Hp: " + Health);
             Destroy(col.gameObject);
@@ -259,9 +283,11 @@ public class PlayerMoveController : NetworkBehaviour
         }
     }
 
-    void Poison()
+    IEnumerator Poison()
     {
-        // TODO Poison
+        IsPoisoned = true;
+        yield return new WaitForSeconds(PosionTime);
+        IsPoisoned = false;
     }
 
     void Respawn()

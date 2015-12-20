@@ -2,7 +2,7 @@
 using UnityEngine.Networking;
 using System.Collections;
 
-public class Snowdrift : NetworkBehaviour
+public class Snowdrift : MonoBehaviour
 {
     public Snowball.SnowType Type;
 
@@ -16,7 +16,7 @@ public class Snowdrift : NetworkBehaviour
     float MinScale = 0.2f;
     [SerializeField]
     int MaxCharges = 15;
-    [SyncVar]
+    //[SyncVar]
     public int Charges;
     int LastKnownCharges = -1;
 
@@ -43,10 +43,6 @@ public class Snowdrift : NetworkBehaviour
         }
 
         GetComponent<Renderer>().material.SetColor("_Color", snowColor);
-
-
-        if (isServer)
-            NetworkServer.Spawn(gameObject);
     }
 
 
@@ -67,7 +63,7 @@ public class Snowdrift : NetworkBehaviour
     // Called on client
     public void CollectSnow()
     {
-        CmdCollectSnow();
+        //CmdCollectSnow();
     }
 
     public void StopHighlight()
@@ -81,7 +77,7 @@ public class Snowdrift : NetworkBehaviour
         Renderer.material.SetColor("_OutlineColor", isAvailible ? Color.green : Color.red);
     }
 
-    [Command]
+    //[Command]
     public void CmdCollectSnow()
     {
         Charges--;
@@ -92,7 +88,7 @@ public class Snowdrift : NetworkBehaviour
 
     void UpdateScale()
     {
-        float s = MinScale + (1f - MinScale) * Charges / (float)MaxCharges;
-        transform.localScale = new Vector3(s, s, s);
+        //float s = MinScale + (1f - MinScale) * Charges / (float)MaxCharges;
+        //transform.localScale = new Vector3(s, s, s);
     }
 }
