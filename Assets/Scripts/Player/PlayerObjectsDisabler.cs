@@ -15,6 +15,7 @@ public class PlayerObjectsDisabler : NetworkBehaviour
 
     void Start()
     {
+        Destroy(GameObject.Find("InitialCamera"));
         if (isLocalPlayer)
         {
             foreach (var obj in DisableSelf)
